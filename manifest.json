@@ -1,0 +1,37 @@
+{
+    "FASTGenomicsApplication": {
+        "Name": "Short description",
+        "Type": "Calculation",
+        "Class": "???",
+        "Author": {
+            "Name": "FG Dev",
+            "Email": "fg.dev@comma-soft.com",
+            "Organisation": "FASTGenomics"
+        },
+        "Description": "Longer Description with details",
+        "License": "BSD 3-Clause License",
+        "Parameters": {
+            "param1name": {
+                "Type": "string",
+                "Description": "Param description",
+                "Default": "foo"
+            }
+        },
+        "Demands": ["CPU"],
+        "Input":
+            {
+                "exprs_in": {
+                    "Type": "ExpressionMatrix",
+                    "Usage": "Gene expressions"
+                }
+            },
+        "Output":
+            {
+				"expression.csv": {
+                    "Type": "ExpressionMatrix",
+                    "Usage": "Transformed gene expression",
+                    "FileName": "expression.csv"
+                }
+            }
+    }
+}

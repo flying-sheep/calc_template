@@ -1,0 +1,12 @@
+version: '3'
+services:
+  ci_integration_tests:
+    build:
+      context: ./..
+      dockerfile: Dockerfile
+    image: apps.fastgenomics.org/fastgenomics/calc_template:${BUILDID:-test}
+    volumes:
+      - ../sample_data/data:/fastgenomics/data/:ro
+      - ../sample_data/config:/fastgenomics/config/:ro
+      - ../sample_data/output:/fastgenomics/output/
+      - ../sample_data/summary:/fastgenomics/summary/

@@ -1,0 +1,2 @@
+# Just for the IDE. The Docker base image already contains scanpy
+scanpy>=0.4.1
