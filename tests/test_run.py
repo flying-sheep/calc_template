@@ -5,7 +5,8 @@ from subprocess import run
 import pytest
 
 
-dir_data = Path(__file__).parent.parent / 'sample_data'
+HERE = Path(__file__).parent
+dir_data = HERE.parent / 'sample_data'
 path_exprs_norm = dir_data / 'output' / 'expression.csv'
 path_summary = dir_data / 'summary' / 'summary.md'
 
@@ -30,8 +31,8 @@ def test_run_docker(fg_env_clean):
     assert not path_exprs_norm.is_file()
     assert not path_summary.is_file()
 
-    run('docker-compose up --force-recreate --build --exit-code-from ci_integration_tests --abort-on-container-exit'.split())
-    run('docker-compose down'.split())
+    run('docker-compose up --force-recreate --build --exit-code-from ci_integration_tests --abort-on-container-exit'.split(), check=True, cwd=HERE)
+    run('docker-compose down'.split(), check=True, cwd=HERE)
 
     assert path_exprs_norm.is_file()
     assert path_summary.is_file()
