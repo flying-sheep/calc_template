@@ -14,6 +14,6 @@ def check_param(param_name: str, dtype: type, check: Callable[[Any], bool], erro
 
 
 param1name = check_param(
-    'normalization', str, lambda p: True,
+    'param1name', str, lambda p: True,
     f'Param 1 is wrong because stuff',
 )

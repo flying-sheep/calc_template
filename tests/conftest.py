@@ -1,29 +1,46 @@
-import sys
 from pathlib import Path
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
-
 HERE = Path(__file__).parent
-APP_DIR = HERE.parent
-DATA_DIR = APP_DIR / 'sample_data'
+APP_DIR   = HERE.parent
+DATA_ROOT = APP_DIR / 'sample_data'
+
+
+local_paths = dict(
+    app=APP_DIR,
+    data=DATA_ROOT / 'data',
+    config=DATA_ROOT / 'config',
+    summary=DATA_ROOT / 'summary',
+    output=DATA_ROOT / 'output',
+)
 
 
 @pytest.fixture
-def fg_env(monkeypatch: MonkeyPatch):
-    for module_name in list(sys.modules.keys()):
-        if module_name.startswith('fastgenomics'):
-            del sys.modules[module_name]
-    monkeypatch.setenv('FG_APP_DIR', str(APP_DIR))
-    monkeypatch.setenv('FG_DATA_ROOT', str(DATA_DIR))
+def app_dir():
+    return APP_DIR
 
 
 @pytest.fixture
-def fg_env_clean(fg_env):
-    import fastgenomics.io as fg_io
+def data_root():
+    return DATA_ROOT
 
-    for d in (fg_io.OUTPUT_DIR, fg_io.SUMMARY_DIR):
-        for f in d.iterdir():
-            if not f.name == '.gitignore':
-                f.unlink()
+
+@pytest.fixture
+def local(monkeypatch: MonkeyPatch):
+    """patches the paths for local testing"""
+    monkeypatch.setattr('fastgenomics.common.DEFAULT_APP_DIR', str(APP_DIR))
+    monkeypatch.setattr('fastgenomics.common.DEFAULT_DATA_ROOT', str(DATA_ROOT))
+    monkeypatch.setattr('fastgenomics.common._PATHS', local_paths)
+    monkeypatch.setattr('fastgenomics.common._PARAMETERS', None)
+
+
+@pytest.fixture
+def clear_output():
+    """clear everything except of .gitignore"""
+    for name in ['output', 'summary']:
+        sub_dir = DATA_ROOT / name
+        for entry in sub_dir.glob('*.*'):
+            if entry.name != '.gitignore':
+                entry.unlink()

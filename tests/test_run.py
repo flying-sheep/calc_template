@@ -11,7 +11,7 @@ path_exprs_norm = dir_data / 'output' / 'expression.csv'
 path_summary = dir_data / 'summary' / 'summary.md'
 
 
-def test_run_locally(fg_env_clean):
+def test_run_locally(local, clear_output):
     from calc_template import main, paths
 
     assert path_exprs_norm == paths.exprs_transformed
@@ -27,7 +27,7 @@ def test_run_locally(fg_env_clean):
 
 @pytest.mark.skipif(which('docker-compose') is None, reason='docker-compose not installed')
 @pytest.mark.skipif(Path('/.dockerenv').is_file(), reason='We are inside of a Docker container')
-def test_run_docker(fg_env_clean):
+def test_run_docker(clear_output):
     assert not path_exprs_norm.is_file()
     assert not path_summary.is_file()
 
