@@ -1,4 +1,4 @@
-FROM apps.fastgenomics.org/fastgenomics/base_calc_scanpy_py36:0.4.1 as base
+FROM apps.fastgenomics.org/fastgenomics/base_calc_scanpy_py36:0.4.2 as base
 
 VOLUME /fastgenomics/data
 VOLUME /fastgenomics/output
@@ -7,9 +7,11 @@ VOLUME /fastgenomics/summary
 
 COPY manifest.json /app/
 COPY calc_template /app/calc_template/
+COPY requirements.txt /app/
 
 WORKDIR /app
-RUN rm -rf write
+RUN ["rm", "-rf", "write"]
+RUN ["pip", "install", "-r", "requirements.txt"]
 
 
 FROM base as test

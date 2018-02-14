@@ -1,2 +1,3 @@
+git+https://github.com/flying-sheep/fastgenomics-py.git@v0.5.3-b#egg=fastgenomics
 # Just for the IDE. The Docker base image already contains scanpy
 scanpy>=0.4.1
